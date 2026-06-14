@@ -46,10 +46,15 @@ def download():
     job_id = str(uuid.uuid4())
     outtmpl = os.path.join(DOWNLOAD_DIR, f'{job_id}.%(ext)s')
     ydl_opts = {
-        'outtmpl': outtmpl,
-        'quiet': True,
-        'format': format_id,
-        'merge_output_format': 'mp4'
+    'outtmpl': outtmpl,
+    'quiet': True,
+    'format': format_id,
+    'merge_output_format': 'mp4',
+    'extractor_args': {
+        'youtube': {
+            'po_token': [f'{os.getenv("PO_TOKEN_PROVIDER_URL")}/web'],
+        }
+    }
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
